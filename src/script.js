@@ -19,7 +19,37 @@ const scene = new THREE.Scene()
  */
 const textureLoader = new THREE.TextureLoader()
 
+// Particles
 
+// const particlesGeometry = new THREE.SphereGeometry(1, 32, 32)
+const particlesGeometry = new THREE.BufferGeometry()
+
+const vertices = new Float32Array( [
+    Math.random() * 2, Math.random() * 2, Math.random() * 2,
+    Math.random() * 2, Math.random() * 2, Math.random() * 2,
+    Math.random() * 2, Math.random() * 2, Math.random() * 2,
+    Math.random() * 2, Math.random() * 2, Math.random() * 2,
+    Math.random() * 2, Math.random() * 2, Math.random() * 2,
+])
+
+const indices = [
+    Math.random() * 3, Math.random() * 3, Math.random() * 3,
+    Math.random() * 3, Math.random() * 3, Math.random() * 3,
+    Math.random() * 3, Math.random() * 3, Math.random() * 3
+]
+
+particlesGeometry.setIndex( indices )
+BoxGeometry.setAttribute('position', new THREE.BufferAttribute( vertices, 3))
+
+const particlesMaterial = new THREE.PointsMaterial({
+    size: 0.02, // default 1
+    sizeAttenuation: true, // default true
+})
+
+// Points
+const particles = new THREE.Points(particlesGeometry, particlesMaterial)
+
+scene.add(particles)
 
 /**
  * Sizes
