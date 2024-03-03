@@ -19,32 +19,54 @@ const scene = new THREE.Scene()
  */
 const textureLoader = new THREE.TextureLoader()
 
+const particleTexture = textureLoader.load('/textures/particles/12.png')
+
 // Particles
 
 // const particlesGeometry = new THREE.SphereGeometry(1, 32, 32)
+
+
+// I tried
+// const particlesGeometry = new THREE.BufferGeometry()
+// const vertices = new Float32Array( [
+//     Math.random() * 2, Math.random() * 2, Math.random() * 2,
+//     Math.random() * 2, Math.random() * 2, Math.random() * 2,
+//     Math.random() * 2, Math.random() * 2, Math.random() * 2,
+//     Math.random() * 2, Math.random() * 2, Math.random() * 2,
+//     Math.random() * 2, Math.random() * 2, Math.random() * 2,
+// ])
+
+// const indices = [
+//     Math.random() * 3, Math.random() * 3, Math.random() * 3,
+//     Math.random() * 3, Math.random() * 3, Math.random() * 3,
+//     Math.random() * 3, Math.random() * 3, Math.random() * 3
+// ]
+
+// particlesGeometry.setIndex( indices )
+// ParticlesGeometry.setAttribute('position', new THREE.BufferAttribute( vertices, 3))
+
+// Solution
 const particlesGeometry = new THREE.BufferGeometry()
+const count = 50000
 
-const vertices = new Float32Array( [
-    Math.random() * 2, Math.random() * 2, Math.random() * 2,
-    Math.random() * 2, Math.random() * 2, Math.random() * 2,
-    Math.random() * 2, Math.random() * 2, Math.random() * 2,
-    Math.random() * 2, Math.random() * 2, Math.random() * 2,
-    Math.random() * 2, Math.random() * 2, Math.random() * 2,
-])
+const positions = new Float32Array(count * 3) // specify number of coordinates
 
-const indices = [
-    Math.random() * 3, Math.random() * 3, Math.random() * 3,
-    Math.random() * 3, Math.random() * 3, Math.random() * 3,
-    Math.random() * 3, Math.random() * 3, Math.random() * 3
-]
+for (let i=0; i< count * 3; i++){
+    positions[i] = Math.random() * 15 - 7.5
+}
 
-particlesGeometry.setIndex( indices )
-BoxGeometry.setAttribute('position', new THREE.BufferAttribute( vertices, 3))
+particlesGeometry.setAttribute(
+    'position',
+    new THREE.BufferAttribute(positions, 3) // 3 = 3 values per vertex
+)
 
 const particlesMaterial = new THREE.PointsMaterial({
-    size: 0.02, // default 1
+    size: 0.1, // default 1
     sizeAttenuation: true, // default true
+    color: "teal",
+    map: particleTexture
 })
+
 
 // Points
 const particles = new THREE.Points(particlesGeometry, particlesMaterial)
