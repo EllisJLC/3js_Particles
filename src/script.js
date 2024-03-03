@@ -19,7 +19,7 @@ const scene = new THREE.Scene()
  */
 const textureLoader = new THREE.TextureLoader()
 
-const particleTexture = textureLoader.load('/textures/particles/12.png')
+const particleTexture = textureLoader.load('/textures/particles/2.png')
 
 // Particles
 
@@ -47,7 +47,7 @@ const particleTexture = textureLoader.load('/textures/particles/12.png')
 
 // Solution
 const particlesGeometry = new THREE.BufferGeometry()
-const count = 50000
+const count = 20000
 
 const positions = new Float32Array(count * 3) // specify number of coordinates
 
@@ -63,10 +63,22 @@ particlesGeometry.setAttribute(
 const particlesMaterial = new THREE.PointsMaterial({
     size: 0.1, // default 1
     sizeAttenuation: true, // default true
-    color: "teal",
-    map: particleTexture
+    color: "white",
+    alphaMap: particleTexture,
+    transparent : true
 })
 
+// Current material shows alpha 0, which still hides other textures, can be solved by the following methods.
+// // alphaTest
+// particlesMaterial.alphaTest = 0.001 // Uses a value between 0 and 1, closer to 0 hides pixels, but surrounding non-black pixels are still rendered
+
+// // depth testing
+// particlesMaterial.depthTest = false // can create bugs, like rendering particles behind other geometries, best to use with only particles of the same colour
+
+// depth buffer
+// webgl assesses positions of already-rendered objects, assesses particles behind a render to avoid rerendering certain pixels
+particlesMaterial.depthWrite = false // very few bugs, usually works
+particlesMaterial.blending = THREE.AdditiveBlending // adds colours together as they overlap
 
 // Points
 const particles = new THREE.Points(particlesGeometry, particlesMaterial)
