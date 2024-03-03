@@ -50,14 +50,21 @@ const particlesGeometry = new THREE.BufferGeometry()
 const count = 20000
 
 const positions = new Float32Array(count * 3) // specify number of coordinates
+const colors = new Float32Array(count * 3) // colours are also created with 3 number arrays, for rgb
 
 for (let i=0; i< count * 3; i++){
     positions[i] = Math.random() * 15 - 7.5
+    colors[i] = Math.random() // each colour in rgb is represented by values 0-1
 }
 
 particlesGeometry.setAttribute(
     'position',
-    new THREE.BufferAttribute(positions, 3) // 3 = 3 values per vertex
+    new THREE.BufferAttribute(positions, 3), // 3 = 3 values per vertex
+)
+
+particlesGeometry.setAttribute(
+    'color',
+    new THREE.BufferAttribute(colors, 3), // 3 = 3 values per vertex
 )
 
 const particlesMaterial = new THREE.PointsMaterial({
@@ -79,6 +86,7 @@ const particlesMaterial = new THREE.PointsMaterial({
 // webgl assesses positions of already-rendered objects, assesses particles behind a render to avoid rerendering certain pixels
 particlesMaterial.depthWrite = false // very few bugs, usually works
 particlesMaterial.blending = THREE.AdditiveBlending // adds colours together as they overlap
+particlesMaterial.vertexColors = true
 
 // Points
 const particles = new THREE.Points(particlesGeometry, particlesMaterial)
