@@ -149,6 +149,11 @@ const tick = () =>
     // Update controls
     controls.update()
 
+    // update particles
+    particles.position.y = Math.sin(elapsedTime) // Animates in groups
+    particles.position.x = Math.cos(elapsedTime)
+
+
     // Render
     renderer.render(scene, camera)
 
